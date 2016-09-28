@@ -1,3 +1,5 @@
+/// <reference path="../../lib/ng2-jwplayer/index.d.ts" />
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
@@ -16,6 +18,9 @@ import { PipesModule } from "./pipes";
 import { ServicesModule } from "./services";
 import { StoreModule } from "./store";
 
+import { JwPlayerModule } from "../../lib/ng2-jwplayer/";
+
+
 import {
     RoutingModule,
     routedComponents
@@ -33,7 +38,7 @@ const providers = [
 @NgModule({
     imports: [
         ActionsModule,
-        ComponentsModule,
+        JwPlayerModule,
         HelpersModule,
 		PipesModule,
         RoutingModule,

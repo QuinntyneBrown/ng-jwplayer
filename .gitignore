@@ -16,6 +16,7 @@ src/**/*.js
 src/**/*.js.map
 src/**/*.css
 src/**/*.css.map
+src/**/*.d.ts
 
 # Build results
 [Dd]ebug/

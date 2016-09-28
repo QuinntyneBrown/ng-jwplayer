@@ -1,11 +1,11 @@
 module.exports = {
     entry: {
-        'polyfills': './src/polyfills.ts',
-        'vendor': './src/vendor.ts',
-        'app': './src/main.ts'
+        'polyfills': './src/demo-app/polyfills.ts',
+        'vendor': './src/demo-app/vendor.ts',
+        'app': './src/demo-app/main.ts'
     },
     output: {
-        path: "./dist",
+        path: "./src/demo-app/",
         filename: '[name].js',
         chunkFilename: '[id].chunk.js'
     },

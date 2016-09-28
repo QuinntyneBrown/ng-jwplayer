@@ -8,8 +8,8 @@ import {
 declare var jwplayer: any;
 
 @Component({
-    template: require("./jw-player.component.html"),
-    styles: [require("./jw-player.component.scss")],
+    templateUrl: "./jw-player.component.html",
+    styleUrls: ["./jw-player.component.css"],
     selector: "jw-player"
 })
 export class JwPlayerComponent implements AfterViewInit {
@@ -23,17 +23,14 @@ export class JwPlayerComponent implements AfterViewInit {
 
     @Input("width")
     public width: string;
-
-    public get player() { return jwplayer(this._elementRef.nativeElement); }
+    
+    public get player():any { return jwplayer(this._elementRef.nativeElement); }
 
     ngAfterViewInit() {
         this.player.setup({
             file: this.file,
             height: this.height,
-            width: this.width,
-            "skin": {
-                "name": "Roundster"
-            }
+            width: this.width
         });
     }
 }
