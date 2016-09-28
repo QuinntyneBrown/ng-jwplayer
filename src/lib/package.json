@@ -1,6 +1,6 @@
 {
   "name": "ng2-jwplayer",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "Angular 2 JW Player",
   "module": "./index.js",
   "typings": "./index.d.ts",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/QuinntyneBrown/ng2-jwplayer#readme",
   "peerDependencies": {
-    "@angular/core": "^2.0.0"
+    "@angular/core": "2.0.0",
+    "@angular/common": "2.0.0"
   }
 }

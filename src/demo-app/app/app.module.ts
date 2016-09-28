@@ -32,6 +32,8 @@ const providers = [
         JwPlayerModule,
         RoutingModule,
 
+        
+
         BrowserModule,
         HttpModule,
         CommonModule,
