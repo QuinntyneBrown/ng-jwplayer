@@ -11,15 +11,7 @@ import "./rxjs-extensions";
 
 import { AppComponent } from './app.component';
 
-import { ActionsModule } from "./actions";
-import { ComponentsModule } from "./components";
-import { HelpersModule } from "./helpers";
-import { PipesModule } from "./pipes";
-import { ServicesModule } from "./services";
-import { StoreModule } from "./store";
-
 import { JwPlayerModule } from "../../lib/ng2-jwplayer/";
-
 
 import {
     RoutingModule,
@@ -37,13 +29,8 @@ const providers = [
 
 @NgModule({
     imports: [
-        ActionsModule,
         JwPlayerModule,
-        HelpersModule,
-		PipesModule,
         RoutingModule,
-        ServicesModule,
-        StoreModule,
 
         BrowserModule,
         HttpModule,

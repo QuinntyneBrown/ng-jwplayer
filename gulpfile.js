@@ -8,15 +8,20 @@ var del = require('del');
 var webpack = require("webpack-stream");
 
 gulp.task('clean', function () {
-    return del([
-        'src/lib/ng2-player/index.d.ts',
+    var tsGeneratedFiles = [
+        'src/lib/ng2-jwplayer/index.d.ts',
         'src/lib/ng2-jwplayer/jw-player.component.d.ts',
-        'src/lib/ng2-player/jw-player.component.js',
-        'src/lib/ng2-player/index.js'
-    ]);
+        'src/lib/ng2-jwplayer/jw-player.module.d.ts',
+        'src/lib/ng2-jwplayer/jw-player.module.js',
+        'src/lib/ng2-jwplayer/jw-player.component.js',
+        'src/lib/ng2-jwplayer/index.js'
+    ];
+   
+    return gulp.src(tsGeneratedFiles, { read: false })
+        .pipe(clean());
 });
 
-gulp.task('compile', function () {
+gulp.task('compile', ['clean'], function () {
     var sourceTsFiles = [
         './src/lib/ng2-jwplayer/jw-player.component.ts',
         './src/lib/ng2-jwplayer/index.ts',
@@ -41,12 +46,18 @@ gulp.task("webpack", ["compile"], function () {
 });
 
 gulp.task('watch', ['webpack'],function () {
-    gulp.watch([config.allFiles], ['compile', 'webpack']);
+    gulp.watch(
+        [
+            './src/lib/ng2-jwplayer/jw-player.component.ts',
+            './src/lib/ng2-jwplayer/jw-player.component.html',
+            './src/lib/ng2-jwplayer/jw-player.component.css',
+            './src/lib/ng2-jwplayer/index.ts',
+            './src/lib/ng2-jwplayer/jw-player.module.ts'
+        ],
+        ['compile', 'webpack']);
 });
 
 
-gulp.task('default', function () {
-    gulp.watch([config.allFiles], ['compile', 'webpack','watch']);
-});
+gulp.task('default',['compile', 'webpack', 'watch']);
 
 

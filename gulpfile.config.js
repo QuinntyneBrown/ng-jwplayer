@@ -24,8 +24,8 @@ var GulpConfig = (function () {
         };
         this.webpackConfig = {
             entry: {
-                'polyfills': './src/demo-app/polyfills.ts',
-                'vendor': './src/demo-app/vendor.ts',
+                //'polyfills': './src/demo-app/polyfills.ts',
+                //'vendor': './src/demo-app/vendor.ts',
                 'app': './src/demo-app/main.ts'
             },
             output: {
