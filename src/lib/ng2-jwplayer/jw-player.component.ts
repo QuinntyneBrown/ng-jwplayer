@@ -1,3 +1,5 @@
+//https://developer.jwplayer.com/jw-player/docs/developer-guide/api/javascript_api_reference/#buffer
+
 import {
     Component,
     Input,
@@ -15,14 +17,11 @@ declare var jwplayer: any;
 export class JwPlayerComponent implements AfterViewInit {
     constructor(private _elementRef: ElementRef) { }
 
-    @Input("file")
-    public file: string;
+    @Input() public file: string;
 
-    @Input("height")
-    public height: string;
+    @Input() public height: string;
 
-    @Input("width")
-    public width: string;
+    @Input() public width: string;
     
     public get player():any { return jwplayer(this._elementRef.nativeElement); }
 
@@ -32,5 +31,34 @@ export class JwPlayerComponent implements AfterViewInit {
             height: this.height,
             width: this.width
         });
+
+        this.handleEventsFor(this.player);
+    }
+
+    public handleEventsFor = (player: any) => {
+        this.onComplete = player.onComplete;
+        this.onBufferChange = player.onBufferChange;
+        this.onBuffer = player.onBuffer;
+    }
+
+    public onComplete(options: {}) {
+        alert("complete!");
+    }
+
+    public onBufferChange(options: {
+        duration: number,
+        bufferPercent: number,
+        position: number,
+        metadata?: number
+    }) {
+
+    }
+
+    public onBuffer(options: {
+        oldState: string,
+        newState: string,
+        reason: string
+    }) {
+
     }
 }

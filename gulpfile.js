@@ -9,12 +9,14 @@ var webpack = require("webpack-stream");
 
 gulp.task('clean', function () {
     var tsGeneratedFiles = [
+        'src/lib/index.d.ts',
+        'src/lib/index.js',
         'src/lib/ng2-jwplayer/index.d.ts',
+        'src/lib/ng2-jwplayer/index.js',
         'src/lib/ng2-jwplayer/jw-player.component.d.ts',
         'src/lib/ng2-jwplayer/jw-player.module.d.ts',
         'src/lib/ng2-jwplayer/jw-player.module.js',
-        'src/lib/ng2-jwplayer/jw-player.component.js',
-        'src/lib/ng2-jwplayer/index.js'
+        'src/lib/ng2-jwplayer/jw-player.component.js'
     ];
    
     return gulp.src(tsGeneratedFiles, { read: false })
