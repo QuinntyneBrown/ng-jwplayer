@@ -11,7 +11,7 @@ import "./rxjs-extensions";
 
 import { AppComponent } from './app.component';
 
-import { JwPlayerModule } from "../../lib/ng2-jwplayer/";
+import { JwPlayerModule } from "./ng2-jwplayer";
 
 import {
     RoutingModule,
@@ -31,9 +31,7 @@ const providers = [
     imports: [
         JwPlayerModule,
         RoutingModule,
-
         
-
         BrowserModule,
         HttpModule,
         CommonModule,

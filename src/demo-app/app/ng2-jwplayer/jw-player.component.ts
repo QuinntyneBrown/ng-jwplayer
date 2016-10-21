@@ -1,23 +1,32 @@
 //https://developer.jwplayer.com/jw-player/docs/developer-guide/api/javascript_api_reference/#buffer
 
+
+
 import {
     Component,
     EventEmitter,
     Input,
     Output,
     ElementRef,
-    AfterViewInit
+    AfterViewInit,
+    OnDestroy
 } from "@angular/core";
+
+import { LocalStorageService } from "../services";
 
 declare var jwplayer: any;
 
 @Component({
-    templateUrl: "./jw-player.component.html",
-    styleUrls: ["./jw-player.component.css"],
+    template: require("./jw-player.component.html"),
+    styles: [require("./jw-player.component.scss")],
     selector: "jw-player"
 })
-export class JwPlayerComponent implements AfterViewInit {
-    constructor(private _elementRef: ElementRef) { }
+export class JwPlayerComponent implements AfterViewInit, OnDestroy {
+    constructor(private _elementRef: ElementRef) {
+        
+    }
+
+    private _items: Array<any> = null;
 
     @Input() public title: string;
 
@@ -26,6 +35,7 @@ export class JwPlayerComponent implements AfterViewInit {
     @Input() public height: string;
 
     @Input() public width: string;
+    
 
     @Output() public bufferChange: EventEmitter<any> = new EventEmitter();
 
@@ -41,8 +51,30 @@ export class JwPlayerComponent implements AfterViewInit {
 
     @Output() public fullscreen: EventEmitter<any> = new EventEmitter<any>();
 
-    private _player: any = null;
     
+    private _player: any = null;
+
+    @Input() public seek: number;
+
+    @Output() public time: EventEmitter<any> = new EventEmitter<any>();
+    
+    public get position() { return LocalStorageService.Instance.get({ name: "jw-player-position" }); }
+
+    public set position(value: number) {
+        LocalStorageService.Instance.put({ name: "jw-player-position", value: value });        
+    }
+
+    public handleEventsFor = (player: any) => {
+        player.onTime(this.onTime);
+        player.onReady(this.onReady);
+    }
+
+     
+    public onTime = (options: { duration: number, position: number }) => {
+        this.time.emit(options);
+    }
+
+
     public get player(): any {        
         this._player = this._player || jwplayer(this._elementRef.nativeElement);
         return this._player;
@@ -54,18 +86,13 @@ export class JwPlayerComponent implements AfterViewInit {
             height: this.height,
             width: this.width
         });
-        this.handleEventsFor(this.player);
+        this.handleEventsFor(this.player);        
     }
 
-    public handleEventsFor = (player: any) => {        
-        this.onBufferChange = player.onBufferChange;
-        this.onBuffer = player.onBuffer;       
-        this.onComplete = player.onComplete;
-        this.onError = player.onError; 
-        this.onFullScreen = player.onFullScreen;        
-        this.onPlay = player.onPlay;
-        this.onStart = player.onStart;
+    ngOnDestroy() {
+
     }
+
 
     public onComplete = (options: {}) => this.complete.emit(options);
 
@@ -84,11 +111,13 @@ export class JwPlayerComponent implements AfterViewInit {
         reason: string
     }) => this.buffer.emit();
 
-    public onStart = (options: {
+    public onReady = (options: {
         oldState: string,
         newState: string,
         reason: string
-    }) => this.buffer.emit();
+    }) => {
+        this.player.seek(this.seek || 0);        
+    };
 
     public onFullScreen = (options: {
         oldState: string,
