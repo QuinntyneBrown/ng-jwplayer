@@ -2,6 +2,8 @@
     <jw-player [file]="src/demo-app/videos/egghead-create-a-list-component-in-vuejs.mp4"
                [height]="420px"
                [width]="680px"
-               [seek]="60"></jw-player>
+               [seek]="seek"
+               (onTime)="onTime($event)">
+    </jw-player>
 </div>
 

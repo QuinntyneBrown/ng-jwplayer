@@ -10,4 +10,10 @@ export class LandingPageComponent implements OnInit {
     ngOnInit() {
 
     }
+
+    public seek: number = 0;
+
+    public onTime($event: any) {
+
+    }
 }
