@@ -1,7 +1,3 @@
-//https://developer.jwplayer.com/jw-player/docs/developer-guide/api/javascript_api_reference/#buffer
-
-
-
 import {
     Component,
     EventEmitter,
@@ -12,7 +8,7 @@ import {
     OnDestroy
 } from "@angular/core";
 
-import { LocalStorageService } from "../services";
+import { guid } from "../utilities";
 
 declare var jwplayer: any;
 
@@ -21,13 +17,13 @@ declare var jwplayer: any;
     styles: [require("./jw-player.component.scss")],
     selector: "jw-player"
 })
-export class JwPlayerComponent implements AfterViewInit, OnDestroy {
-    constructor(private _elementRef: ElementRef) {
-        
-    }
+export class JwPlayerComponent implements AfterViewInit {
+    constructor(private _elementRef: ElementRef) { }
+    
+    public uniqueId: string = guid();
 
-    private _items: Array<any> = null;
-
+    public events:Array<string> = ['ready', 'play', 'pause', 'complete', 'seek', 'error', 'playlistItem', 'time', 'firstFrame'];
+    
     @Input() public title: string;
 
     @Input() public file: string;
@@ -36,95 +32,42 @@ export class JwPlayerComponent implements AfterViewInit, OnDestroy {
 
     @Input() public width: string;
     
-
-    @Output() public bufferChange: EventEmitter<any> = new EventEmitter();
-
-    @Output() public complete: EventEmitter<any> = new EventEmitter();
-
-    @Output() public buffer: EventEmitter<any> = new EventEmitter();
-
-    @Output() public error: EventEmitter<any> = new EventEmitter<any>();
-
-    @Output() public play: EventEmitter<any> = new EventEmitter<any>();
-
-    @Output() public start: EventEmitter<any> = new EventEmitter<any>();
-
-    @Output() public fullscreen: EventEmitter<any> = new EventEmitter<any>();
-
+    @Output() public playerEvent: EventEmitter<any> = new EventEmitter();
     
-    private _player: any = null;
-
-    @Input() public seek: number;
-
-    @Output() public time: EventEmitter<any> = new EventEmitter<any>();
+    private _playerInstance: any = null;
     
-    public get position() { return LocalStorageService.Instance.get({ name: "jw-player-position" }); }
-
-    public set position(value: number) {
-        LocalStorageService.Instance.put({ name: "jw-player-position", value: value });        
-    }
-
     public handleEventsFor = (player: any) => {
-        player.onTime(this.onTime);
-        player.onReady(this.onReady);
+        this.events.forEach((type) => {
+            this.playerInstance
+                .on(type, function (event) {
+                    this.playerEvent.emit(
+                        {
+                            playerId: this.uniqueId,
+                            event: event,
+                            type: type,
+                            playerInstance: this.playerInstance
+                        }
+                    );
+                });
+        })        
     }
-
-     
-    public onTime = (options: { duration: number, position: number }) => {
-        this.time.emit(options);
-    }
-
-
-    public get player(): any {        
-        this._player = this._player || jwplayer(this._elementRef.nativeElement);
-        return this._player;
+    
+    public get playerInstance(): any {        
+        this._playerInstance = this._playerInstance || jwplayer(this._elementRef.nativeElement);
+        return this._playerInstance;
     }
 
     ngAfterViewInit() {
-        this.player.setup({
+        this.playerInstance.setup({
             file: this.file,
             height: this.height,
             width: this.width
         });
-        this.handleEventsFor(this.player);        
+        this.handleEventsFor(this.playerInstance);        
     }
-
-    ngOnDestroy() {
-
-    }
-
-
-    public onComplete = (options: {}) => this.complete.emit(options);
-
-    public onError = () => this.error.emit();       
-
-    public onBufferChange = (options: {
-        duration: number,
-        bufferPercent: number,
-        position: number,
-        metadata?: number
-    }) => this.bufferChange.emit(options);
-
-    public onBuffer = (options: {
-        oldState: string,
-        newState: string,
-        reason: string
-    }) => this.buffer.emit();
-
-    public onReady = (options: {
-        oldState: string,
-        newState: string,
-        reason: string
-    }) => {
-        this.player.seek(this.seek || 0);        
+    
+    public seek = (options: { duration: number }) => {
+        this.playerInstance.seek(options.duration);
     };
-
-    public onFullScreen = (options: {
-        oldState: string,
-        newState: string,
-        reason: string
-    }) => this.buffer.emit();
-
-    public onPlay = (options: {
-    }) => this.play.emit();
+    
 }
