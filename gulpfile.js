@@ -27,8 +27,7 @@ gulp.task('compile', ['clean'], function () {
     var sourceTsFiles = [
         './src/lib/ng2-jwplayer/jw-player.component.ts',
         './src/lib/ng2-jwplayer/index.ts',
-        './src/lib/ng2-jwplayer/jw-player.module.ts',
-        config.libraryTypeScriptDefinitions
+        './src/lib/ng2-jwplayer/jw-player.module.ts'
     ];
 
     var tsResult = gulp.src(sourceTsFiles)

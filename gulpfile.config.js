@@ -9,18 +9,22 @@ var GulpConfig = (function () {
             './src/**/*.ts!(*.d.ts)',
             './demo-app/**/*.ts!(*.d.ts)'];
         this.typings = './typings/';
-        this.libraryTypeScriptDefinitions = './typings/**/*index.d.ts';
+
         this.allFiles = [this.allCss, this.allTypeScript, this.allHtml];
         this.tsConfig = {
+            "sourceMap": true,
+            "declaration": true,
+            "moduleResolution": "node",
             "emitDecoratorMetadata": true,
             "experimentalDecorators": true,
-            "target": "es5",
-            "module": "commonjs",
-            "moduleResolution": "node",
-            "removeComments": true,
-            "sourceMap": true,
-            "outDir": "../lib",
-            "declaration": true
+            "target": "es5",            
+            "typeRoots": [
+              "node_modules/@types"
+            ],
+            "lib": [
+              "es2016",
+              "dom"
+            ]
         };
         this.webpackConfig = {
             entry: {
